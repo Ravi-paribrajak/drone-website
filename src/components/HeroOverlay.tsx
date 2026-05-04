@@ -1,8 +1,31 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+
 export default function HeroOverlay() {
+  const [offsetY, setOffsetY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Calculate how far down we've scrolled
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollFraction = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      
+      // Move text up by a maximum of 250px over the course of the scroll
+      setOffsetY(scrollFraction * 250);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Initialize
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="fixed inset-0 z-20 flex flex-col justify-between pointer-events-none px-6 md:px-12 lg:px-20 pb-6 md:pb-12 lg:pb-20 pt-6 md:pt-8 lg:pt-10">
       
-      {/* Top Navbar Area */}
+      {/* Top Navbar Area (Stays perfectly sticky) */}
       <header className="flex justify-between items-center w-full">
         <div className="text-2xl font-bold tracking-tighter text-white">
           RX<span className="text-[var(--color-neon-yellow)]">.</span>
@@ -14,8 +37,11 @@ export default function HeroOverlay() {
         </nav>
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex flex-col items-start max-w-5xl gap-8">
+      {/* Main Content Area (Moves up slightly) */}
+      <main 
+        className="flex flex-col items-start max-w-5xl gap-8 will-change-transform"
+        style={{ transform: `translate3d(0, -${offsetY}px, 0)` }}
+      >
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[1.05] tracking-tight">
           We are your <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">
@@ -33,8 +59,11 @@ export default function HeroOverlay() {
         </button>
       </main>
 
-      {/* Bottom Data Points */}
-      <footer className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full border-t border-white/10 pt-8 mt-12 backdrop-blur-sm">
+      {/* Bottom Data Points (Moves up slightly faster for depth) */}
+      <footer 
+        className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full border-t border-white/10 pt-8 mt-12 backdrop-blur-sm will-change-transform"
+        style={{ transform: `translate3d(0, -${offsetY * 1.2}px, 0)` }}
+      >
         <div className="flex flex-col gap-1">
           <span className="text-3xl md:text-4xl font-bold text-white tracking-tight">91,372+</span>
           <span className="text-xs uppercase tracking-widest text-[var(--color-neon-yellow)] font-medium">Active Users</span>
