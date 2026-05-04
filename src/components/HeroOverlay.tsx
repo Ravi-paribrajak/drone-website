@@ -1,6 +1,6 @@
 export default function HeroOverlay() {
   return (
-    <div className="fixed inset-0 z-20 flex flex-col justify-between pointer-events-none p-6 md:p-12 lg:p-20">
+    <div className="fixed inset-0 z-20 flex flex-col justify-between pointer-events-none px-6 md:px-12 lg:px-20 pb-6 md:pb-12 lg:pb-20 pt-6 md:pt-8 lg:pt-10">
       
       {/* Top Navbar Area */}
       <header className="flex justify-between items-center w-full">
